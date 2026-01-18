@@ -262,6 +262,13 @@ bats -t tests/bash/
 5. Ensure all tests pass
 6. Submit a pull request
 
+## Project Governance
+
+- **[LICENSE.md](LICENSE.md)** - MIT License details
+- **[SECURITY.md](SECURITY.md)** - Security policy and reporting
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
+- **[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)** - Community standards
+
 ## Version History
 
 - **v1.0.0** - Initial release with comprehensive testing framework
@@ -269,6 +276,7 @@ bats -t tests/bash/
 - Full Python and bash test coverage
 - Dynamic route loading from JSON
 - Admin and reader user simulation
+- Complete project governance documentation
 
 ## License
 
