@@ -372,13 +372,13 @@ def get_roles(name):
 POSTS = []
 
 ADMIN_USERS = [
-    {"username": "administrator", "password": "4dMini5TrAt0R(*)#"},
-    {"username": "johndoers", "password": "J0hNdOeH4wK#!(*)"},
+    {"username": "", "password": ""},
+    {"username": "", "password": ""},
 ]
 
 READER_USERS = [
-    {"username": "qismiyyah", "password": "Qi5MiYy4HC4ntIk<#>[@]!"},
-    {"username": "testuser", "password": "tE5TuSeR#(*)"},
+    {"username": "", "password": ""},
+    {"username": "", "password": ""},
 ]
 
 # Initialize routes
