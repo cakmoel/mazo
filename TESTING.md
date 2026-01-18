@@ -15,16 +15,15 @@ Mazo includes a comprehensive testing suite covering:
 
 ```
 mazo/
-├── tests/                    # Python tests
-│   ├── conftest.py          # Test fixtures and configuration
-│   ├── test_route_loader.py # RouteLoader class tests
-│   ├── test_user_classes.py # User class and authentication tests
-│   └── test_integration.py  # Integration tests with real routes
-├── test/bats/               # BATS shell tests
-│   ├── locust_basic.bats    # Basic script functionality tests
-│   └── shellcheck.bats      # Shell script linting tests
-├── .github/workflows/       # CI/CD configuration
-│   └── ci.yml              # GitHub Actions pipeline
+├── tests/                    # Main test directory
+│   ├── python/               # Python test files
+│   │   ├── conftest.py      # Test fixtures and configuration
+│   │   ├── test_route_loader.py # RouteLoader class tests
+│   │   ├── test_user_classes.py # User class and authentication tests
+│   │   └── test_integration.py  # Integration tests with real routes
+│   └── bash/                 # Bash shell script tests
+│       ├── locust_basic.bats    # Basic script functionality tests
+│       └── shellcheck.bats      # Shell script linting tests
 ├── pytest.ini              # Pytest configuration
 ├── loadrequirements.txt     # Dependencies (including test deps)
 └── run_tests.sh            # Local test runner
@@ -49,17 +48,17 @@ Run all tests with the test runner:
 pip install -r loadrequirements.txt
 
 # Run all Python tests
-pytest tests/ -v
+pytest tests/python/ -v
 
 # Run with coverage
-pytest tests/ --cov=locustfile --cov-report=html
+pytest tests/python/ --cov=locustfile --cov-report=html
 
 # Run specific test file
-pytest tests/test_route_loader.py -v
+pytest tests/python/test_route_loader.py -v
 
 # Run with markers
-pytest tests/ -m unit -v
-pytest tests/ -m integration -v
+pytest tests/python/ -m unit -v
+pytest tests/python/ -m integration -v
 ```
 
 #### Shell Script Tests
@@ -69,10 +68,10 @@ pytest tests/ -m integration -v
 sudo apt-get install bats
 
 # Run all shell tests
-bats test/bats/
+bats tests/bash/
 
 # Run specific test file
-bats test/bats/locust_basic.bats
+bats tests/bash/locust_basic.bats
 ```
 
 #### Static Analysis
@@ -127,31 +126,11 @@ flake8 locustfile.py
   - Security considerations
   - Error handling patterns
 
-## CI/CD Pipeline
-
-The GitHub Actions workflow runs on:
-
-- **Push** to `main` or `develop` branches
-- **Pull Requests** to `main` branch
-
-### Workflow Stages
-
-1. **Python Tests** - Multi-version Python testing (3.8-3.11)
-2. **Shell Tests** - BATS and ShellCheck validation
-3. **Security Scan** - Bandit and Safety scanning
-4. **Code Quality** - Black, isort, Flake8 checks
-5. **Integration Test** - End-to-end functionality
-6. **Build Status** - Overall pipeline status
-
-### Coverage Reporting
-
-Test coverage is automatically uploaded to Codecov for tracking and visualization.
-
 ## Writing New Tests
 
 ### Python Tests
 
-Add test files to the `tests/` directory following the naming convention `test_*.py`:
+Add test files to the `tests/python/` directory following the naming convention `test_*.py`:
 
 ```python
 #!/usr/bin/env python3
@@ -174,7 +153,7 @@ class TestNewFeature:
 
 ### Shell Tests
 
-Add BATS tests to `test/bats/`:
+Add BATS tests to `tests/bash/`:
 
 ```bash
 #!/usr/bin/env bats
@@ -213,36 +192,36 @@ Tests use a simplified version of your actual routes.json:
 
 ```bash
 # Run with verbose output
-pytest tests/ -v -s
+pytest tests/python/ -v -s
 
 # Run specific test with debugging
-pytest tests/test_route_loader.py::TestRouteLoader::test_load_routes_success_new_format -v -s
+pytest tests/python/test_route_loader.py::TestRouteLoader::test_load_routes_success_new_format -v -s
 
 # Stop on first failure
-pytest tests/ -x
+pytest tests/python/ -x
 
 # Show local variables on failure
-pytest tests/ -l
+pytest tests/python/ -l
 ```
 
 ### Shell Tests
 
 ```bash
 # Run with verbose output
-bats -t test/bats/
+bats -t tests/bash/
 
 # Run specific test
-bats -t test/bats/locust_basic.bats
+bats -t tests/bash/locust_basic.bats
 
 # Show test output
-bats -p test/bats/
+bats -p tests/bash/
 ```
 
 ## Performance Considerations
 
 - Tests are optimized for speed with mocked dependencies
 - Integration tests use minimal sample data
-- CI/CD pipeline caches pip dependencies
+- Local development tools cache dependencies where possible
 - Parallel execution is used where possible
 
 ## Troubleshooting

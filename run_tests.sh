@@ -44,7 +44,7 @@ def main():
     
     # 2. BATS tests
     tests_total += 1
-    if run_command("bats test/bats/", "BATS shell tests"):
+    if run_command("bats tests/bash/", "BATS shell tests"):
         tests_passed += 1
     
     # 3. Python syntax check
@@ -54,7 +54,7 @@ def main():
     
     # 4. Python unit tests
     tests_total += 1
-    if run_command("pytest tests/ -v --tb=short", "Python unit tests"):
+    if run_command("pytest tests/python/ -v --tb=short", "Python unit tests"):
         tests_passed += 1
     
     # 5. Script configuration test
