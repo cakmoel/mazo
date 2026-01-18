@@ -86,6 +86,7 @@ setup_venv() {
 
     # Activate virtual environment
     print_status "Activating virtual environment..."
+    # shellcheck source=/dev/null
     source "$VENV_DIR/bin/activate"
     
     # Upgrade pip
@@ -199,7 +200,7 @@ start_locust() {
     echo
     
     # Execute Locust
-    eval $LOCUST_CMD
+    eval "$LOCUST_CMD"
 }
 
 # Function to show usage
@@ -302,7 +303,7 @@ main() {
     
     # Wait for user confirmation if not headless
     if [ "$HEADLESS" = false ]; then
-        read -p "Press Enter to start Locust or Ctrl+C to cancel..."
+        read -r -p "Press Enter to start Locust or Ctrl+C to cancel..."
     fi
     
     start_locust
