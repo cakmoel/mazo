@@ -5,7 +5,7 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Python](https://img.shields.io/badge/python-3.7%2B-blue)
 
-Mazo is a comprehensive, production-ready load testing suite built with Locust for PHP MVC web applications. It simulates realistic user behavior with both authenticated (admin) and anonymous (reader) user scenarios.
+Mazo is a comprehensive Locust-based load testing package for PHP MVC web applications. It replicates realistic user behavior for both authenticated (admin) and anonymous (reader) users.
 
 ## Features
 
