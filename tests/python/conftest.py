@@ -3,12 +3,13 @@
 Test configuration and fixtures
 """
 
-import pytest
-import tempfile
 import json
-import sys
 import os
+import sys
+import tempfile
 from unittest.mock import Mock
+
+import pytest
 
 # Add parent directory to path to import locustfile
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -17,25 +18,17 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 @pytest.fixture
 def temp_routes_file():
     """Create a temporary routes.json file"""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         # Write basic routes structure
         basic_routes = {
-            "home": {
-                "urls": ["/"],
-                "methods": ["GET"],
-                "controller": "HomeController@index"
-            },
-            "single": {
-                "urls": ["/post/1/test"],
-                "methods": ["GET"],
-                "controller": "PostController@show"
-            }
+            "home": {"urls": ["/"], "methods": ["GET"], "controller": "HomeController@index"},
+            "single": {"urls": ["/post/1/test"], "methods": ["GET"], "controller": "PostController@show"},
         }
         json.dump(basic_routes, f)
         temp_path = f.name
-    
+
     yield temp_path
-    
+
     # Cleanup
     os.unlink(temp_path)
 
@@ -56,12 +49,12 @@ def mock_csrf_response():
     """Create a mock response with CSRF token"""
     response = Mock()
     response.status_code = 200
-    response.text = '''
+    response.text = """
     <form>
         <input type="hidden" name="login_form" value="csrf_test_token_123">
         <button type="submit">Login</button>
     </form>
-    '''
+    """
     response.cookies = {}
     response.headers = {}
     return response

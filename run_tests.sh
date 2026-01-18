@@ -52,17 +52,37 @@ def main():
     if run_command("python -m py_compile locustfile.py", "Python syntax check"):
         tests_passed += 1
     
-    # 4. Python unit tests
+    # 4. Code formatting check
+    tests_total += 1
+    if run_command("source lint_venv/bin/activate && black --check --diff locustfile.py", "Black code formatting check"):
+        tests_passed += 1
+    
+    # 5. Import sorting check
+    tests_total += 1
+    if run_command("source lint_venv/bin/activate && isort --check-only --diff locustfile.py", "isort import sorting check"):
+        tests_passed += 1
+    
+    # 6. Python linting
+    tests_total += 1
+    if run_command("source lint_venv/bin/activate && flake8 locustfile.py", "Flake8 linting"):
+        tests_passed += 1
+    
+    # 7. Python unit tests
     tests_total += 1
     if run_command("pytest tests/python/ -v --tb=short", "Python unit tests"):
         tests_passed += 1
     
-    # 5. Script configuration test
+    # 8. Script configuration test
     tests_total += 1
     if run_command("./locust.sh --check-only", "Script configuration test"):
         tests_passed += 1
     
-    # 6. Test with sample routes.json
+    # 10. Type checking (optional)
+    tests_total += 1
+    if run_command("source lint_venv/bin/activate && mypy locustfile.py --ignore-missing-imports", "MyPy type checking"):
+        tests_passed += 1
+    
+    # 11. Test with sample routes.json
     tests_total += 1
     sample_routes_test = '''
 import sys
