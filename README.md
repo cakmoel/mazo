@@ -1,4 +1,4 @@
-# Mazo - Production Load Testing Suite
+# Mazo - Load Testing Suite
 
 ![CI Status](https://img.shields.io/badge/CI-Passing-brightgreen)
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
