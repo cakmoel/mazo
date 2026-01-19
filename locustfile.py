@@ -5,7 +5,6 @@ Locust performance test for PHP MVC Blog
 Author: M.Noermoehammad https://github.com/cakmoel
 Version: 3.0.0
 License: MIT
-Date:
 """
 
 import json
@@ -50,7 +49,7 @@ class RouteDefinition:
     methods: List[HTTPMethod]
     roles: List[str]
     requires_auth: bool
-    urls: List[str]  # NEW: Store actual URLs for random selection
+    urls: List[str]
 
     def __post_init__(self):
         """Validate route definition after initialization"""
