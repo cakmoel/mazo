@@ -62,7 +62,7 @@ Mazo is a comprehensive Locust-based load testing package for web applications. 
 
 ### Route Setup
 
-The most important prerequisite is having a `routes.json` file that defines your application's URL structure. This file should be exported from your PHP MVC application and contain route definitions like:
+The most important prerequisite is having a `routes.json` file that defines your application's URL structure. This file should be exported from your web application and contain route definitions like:
 
 ```json
 {
