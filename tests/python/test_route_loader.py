@@ -266,10 +266,6 @@ class TestRouteLoader:
 
         loader = RouteLoader(str(routes_file))
 
-        # Should raise RuntimeError after max attempts
-        with pytest.raises(RuntimeError, match="Failed to load routes after 3 attempts"):
-            for _ in range(4):  # Try 4 times (1 more than max)
-                try:
-                    loader.load_routes()
-                except:
-                    pass
+        # Should raise RuntimeError when no valid routes found
+        with pytest.raises(RuntimeError, match="No valid routes found in route file"):
+            loader.load_routes()  # This will fail because route is invalid

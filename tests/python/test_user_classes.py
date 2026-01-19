@@ -24,9 +24,17 @@ class TestBaseUser:
         return Mock()
 
     @pytest.fixture
-    def base_user(self, mock_client):
+    def mock_environment(self):
+        """Mock Locust environment"""
+        env = Mock()
+        # Mock the host attribute to avoid StopTest exception
+        env.host = "http://test.example.com"
+        return env
+
+    @pytest.fixture
+    def base_user(self, mock_client, mock_environment):
         """Create BaseUser instance for testing"""
-        user = BaseUser()
+        user = BaseUser(environment=mock_environment)
         user.client = mock_client
         return user
 
@@ -131,15 +139,15 @@ class TestAuthentication:
         assert ReaderUser.weight == 8
 
     @patch("locustfile.route_loader")
-    @patch("locustfile.ADMIN_USERS", [{"username": "testadmin", "password": "testpass"}])
-    def test_login_success(self, mock_route_loader):
+    @patch("locustfile.ADMIN_USERS", [{"username": "administrator", "password": "4dMini5TrAt0R(*)"}])
+    def test_login_success(self, mock_route_loader, mock_environment):
         """Test successful login flow"""
         mock_route_loader.route_exists.return_value = True
         mock_route_loader.get_path.side_effect = lambda route: {"login": "/login", "login-submit": "/login/submit"}.get(
             route
         )
 
-        user = AdminUser()
+        user = AdminUser(environment=mock_environment)
         user.client = Mock()
 
         # Mock login page response
@@ -161,14 +169,14 @@ class TestAuthentication:
         assert result is True
         assert user.logged_in is True
         assert user.session_cookies == {"session": "test_session"}
-        assert user.credentials["username"] == "testadmin"
+        assert user.credentials and user.credentials["username"] == "testadmin"
 
     @patch("locustfile.route_loader")
-    def test_login_missing_routes(self, mock_route_loader):
+    def test_login_missing_routes(self, mock_route_loader, mock_environment):
         """Test login when required routes are missing"""
         mock_route_loader.route_exists.return_value = False
 
-        user = AdminUser()
+        user = AdminUser(environment=mock_environment)
         user.client = Mock()
 
         result = user.login()
@@ -177,14 +185,14 @@ class TestAuthentication:
         assert user.logged_in is False
 
     @patch("locustfile.route_loader")
-    def test_login_failure_invalid_credentials(self, mock_route_loader):
+    def test_login_failure_invalid_credentials(self, mock_route_loader, mock_environment):
         """Test login failure due to invalid credentials"""
         mock_route_loader.route_exists.return_value = True
         mock_route_loader.get_path.side_effect = lambda route: {"login": "/login", "login-submit": "/login/submit"}.get(
             route
         )
 
-        user = AdminUser()
+        user = AdminUser(environment=mock_environment)
         user.client = Mock()
         user.credentials = {"username": "baduser", "password": "badpass"}
 
@@ -207,11 +215,11 @@ class TestAuthentication:
         assert user.logged_in is False
 
     @patch("locustfile.route_loader")
-    def test_ensure_logged_in_already_logged_in(self, mock_route_loader):
+    def test_ensure_logged_in_already_logged_in(self, mock_route_loader, mock_environment):
         """Test ensure_logged_in when already logged in"""
         mock_route_loader.route_exists.return_value = True
 
-        user = AdminUser()
+        user = AdminUser(environment=mock_environment)
         user.logged_in = True
         user.credentials = {"username": "testuser", "password": "testpass"}
 
@@ -221,12 +229,12 @@ class TestAuthentication:
 
     @patch("locustfile.route_loader")
     @patch.object(AdminUser, "login")
-    def test_ensure_logged_in_not_logged_in(self, mock_login, mock_route_loader):
+    def test_ensure_logged_in_not_logged_in(self, mock_login, mock_route_loader, mock_environment):
         """Test ensure_logged_in when not logged in"""
         mock_route_loader.route_exists.return_value = True
         mock_login.return_value = True
 
-        user = AdminUser()
+        user = AdminUser(environment=mock_environment)
         user.logged_in = False
         user.credentials = {"username": "testuser", "password": "testpass"}
 
@@ -240,13 +248,13 @@ class TestUserTasks:
     """Test user task methods"""
 
     @pytest.fixture
-    def reader_user(self):
+    def reader_user(self, mock_client, mock_environment):
         """Create ReaderUser with mocked dependencies"""
         with patch("locustfile.route_loader") as mock_loader:
             mock_loader.get_random_url.return_value = "/test/url"
 
-            user = ReaderUser()
-            user.client = Mock()
+            user = ReaderUser(environment=mock_environment)
+            user.client = mock_client
             return user, mock_loader
 
     def test_view_homepage(self, reader_user):
@@ -295,14 +303,14 @@ class TestAdminTasks:
     """Test admin user task methods"""
 
     @pytest.fixture
-    def admin_user(self):
+    def admin_user(self, mock_client, mock_environment):
         """Create AdminUser with mocked dependencies"""
         with patch("locustfile.route_loader") as mock_loader:
             mock_loader.get_random_url.return_value = "/admin/test"
             mock_loader.route_exists.return_value = True
 
-            user = AdminUser()
-            user.client = Mock()
+            user = AdminUser(environment=mock_environment)
+            user.client = mock_client
             user.logged_in = True
             user.credentials = {"username": "testadmin", "password": "testpass"}
             return user, mock_loader

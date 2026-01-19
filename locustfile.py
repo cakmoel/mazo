@@ -185,6 +185,11 @@ class RouteLoader:
                 if not methods:
                     methods = [HTTPMethod.GET]
 
+# Parse roles (initialize empty array, populate if present)
+            roles = []
+            if "roles" in data:
+                roles = [str(role) for role in data["roles"]]
+        
         # Handle OLD array format for backward compatibility
         elif isinstance(data, list):
             # Array format: ["/path", "Controller@method"]
@@ -420,10 +425,10 @@ class BaseUser(HttpUser):
         elif READER_USERS:
             self.credentials = random.choice(READER_USERS)
 
-        logger.info(f"User started: {self.credentials['username'] if self.credentials else 'Anonymous'}")
+        logger.info(f"User started: {self.credentials['username'] if self.credentials and 'username' in self.credentials else 'Anonymous'}")
 
     def on_stop(self):
-        username = self.credentials["username"] if self.credentials else "Anonymous"
+        username = self.credentials["username"] if self.credentials and "username" in self.credentials else "Anonymous"
         logger.info(f"User stopped: {username} (logged_in: {self.logged_in})")
 
     def load_posts(self):
@@ -504,8 +509,8 @@ class BaseUser(HttpUser):
 
             # Build complete payload matching PHP form exactly
             payload = {
-                "username": self.credentials["username"],
-                "password": self.credentials["password"],
+                "username": self.credentials["username"] if self.credentials and "username" in self.credentials else "",
+                "password": self.credentials["password"] if self.credentials and "password" in self.credentials else "",
                 "login_form": csrf_token or "",
                 "remember": "on",
             }
@@ -531,7 +536,7 @@ class BaseUser(HttpUser):
                         response.success()
                         self.logged_in = True
                         self.session_cookies = dict(response.cookies)
-                        logger.info(f"Successfully logged in as {self.credentials['username']}")
+                        logger.info(f"Successfully logged in as {self.credentials['username'] if self.credentials and 'username' in self.credentials else 'unknown'}")
                         return True
                     else:
                         # Check for specific errors
@@ -543,32 +548,32 @@ class BaseUser(HttpUser):
 
                         response.failure(f"Login failed: {error_msg}")
                         self.logged_in = False
-                        logger.warning(f"Login failed for {self.credentials['username']}: {error_msg}")
+                        logger.warning(f"Login failed for {self.credentials['username'] if self.credentials and 'username' in self.credentials else 'unknown'}: {error_msg}")
                         return False
 
                 elif response.status_code in [500, 502, 503]:
                     response.failure(f"Server error ({response.status_code}) during login")
                     self.logged_in = False
-                    logger.error(f"Server {response.status_code} error for {self.credentials['username']}")
+                    logger.error(f"Server {response.status_code} error for {self.credentials['username'] if self.credentials and 'username' in self.credentials else 'unknown'}")
                     return False
                 else:
                     response.failure(f"HTTP {response.status_code} during login")
                     self.logged_in = False
-                    logger.error(f"HTTP {response.status_code} for {self.credentials['username']}")
+                    logger.error(f"HTTP {response.status_code} for {self.credentials['username'] if self.credentials and 'username' in self.credentials else 'unknown'}")
                     return False
 
         except Exception as e:
-            logger.error(f"Login exception for {self.credentials['username']}: {str(e)}")
+            logger.error(f"Login exception for {self.credentials['username'] if self.credentials and 'username' in self.credentials else 'unknown'}: {str(e)}")
             self.logged_in = False
             return False
 
     def ensure_logged_in(self):
         """Ensure persistent admin session with enhanced retry logic"""
         if not self.logged_in:
-            logger.info(f"Attempting to login {self.credentials['username']}")
+            logger.info(f"Attempting to login {self.credentials['username'] if self.credentials and 'username' in self.credentials else 'unknown'}")
             success = self.login()
             if not success:
-                logger.error(f"Failed to establish admin session for {self.credentials['username']}")
+                logger.error(f"Failed to establish admin session for {self.credentials['username'] if self.credentials and 'username' in self.credentials else 'unknown'}")
             return success
         return True
 
@@ -758,7 +763,7 @@ class ReaderUser(BaseUser):
 
         # Build payload exactly as your form expects
         payload = {
-            "comment_form": csrf_input.get("value", ""),
+            "comment_form": csrf_input.get("value", "") if csrf_input else "",
             "post_id": post_id_input.get("value", "") if post_id_input else str(post["id"]),
             "post_slug": post_slug_input.get("value", "") if post_slug_input else post["slug"],
             "author": f"Reader{author_id}",
