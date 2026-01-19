@@ -295,6 +295,7 @@ main() {
     pre_flight_checks
     
     if [ "$CHECK_ONLY" = true ]; then
+        show_config
         print_success "Configuration check completed successfully"
         exit 0
     fi
