@@ -44,7 +44,7 @@ class RouteDefinition:
     """Data class representing a route definition"""
 
     name: str
-    path: str
+    path: Optional[str]
     controller: str
     methods: List[HTTPMethod]
     roles: List[str]
@@ -53,7 +53,7 @@ class RouteDefinition:
 
     def __post_init__(self):
         """Validate route definition after initialization"""
-        if not self.path.startswith("/"):
+        if self.path and not self.path.startswith("/"):
             logger.warning(f"Route '{self.name}' path '{self.path}' should start with '/'")
 
         if not self.controller or "@" not in self.controller:
@@ -63,7 +63,7 @@ class RouteDefinition:
         if not self.requires_auth:
             self.requires_auth = bool(self.roles) or any(
                 method in [HTTPMethod.POST, HTTPMethod.PUT, HTTPMethod.DELETE] for method in self.methods
-            )
+            ) or (self.path and "/admin" in self.path) or "dashboard" in self.name.lower()
 
 
 class RouteLoader:
@@ -167,9 +167,13 @@ class RouteLoader:
         if isinstance(data, dict) and "urls" in data:
             # New format: {"urls": ["/path1", "/path2"], "methods": [...], "controller": "..."}
             urls = data["urls"]
-            if urls and isinstance(urls, list):
+            if urls and isinstance(urls, list) and len(urls) > 0:
                 # Use the first URL as the primary path for route matching
                 path = str(urls[0])
+            else:
+                # Handle empty URLs array gracefully
+                path = None
+                urls = []
 
             controller = str(data.get("controller", ""))
 
@@ -228,8 +232,9 @@ class RouteLoader:
             raise ValueError(f"Route data must be array or object, got {type(data)}")
 
         # Validate required fields
-        if not path:
-            raise ValueError("Route path cannot be empty")
+        # Path can be None for empty URLs (edge case)
+        if path is not None and not path:
+            raise ValueError("Route path cannot be empty string")
 
         if not controller:
             raise ValueError("Route controller cannot be empty")
@@ -383,13 +388,13 @@ def get_roles(name):
 POSTS = []
 
 ADMIN_USERS = [
-    {"username": "", "password": ""},
-    {"username": "", "password": ""},
+    {"username": "YOUR_USERNAME", "password": "YOUR_PASSWORD"},
+    {"username": "YOUR_USERNAME", "password": "YOUR_PASSWORD"},
 ]
 
 READER_USERS = [
-    {"username": "", "password": ""},
-    {"username": "", "password": ""},
+    {"username": "YOUR_USERNAME", "password": "YOUR_PASSWORD"},
+    {"username": "YOUR_USERNAME", "password": "YOUR_PASSWORD"},
 ]
 
 # Initialize routes
