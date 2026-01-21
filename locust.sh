@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ================================================
-# Production-ready Locust Load Test Launcher
+# Locust Load Test Launcher
 # Tools: Locust with Enhanced Route Loading & Monitoring
 # Author: M.Noermoehammad
 # Version: 2.0.0
