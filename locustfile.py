@@ -390,6 +390,8 @@ POSTS = []
 ADMIN_USERS = [
     {"username": "YOUR_USERNAME", "password": "YOUR_PASSWORD"},
     {"username": "YOUR_USERNAME", "password": "YOUR_PASSWORD"},
+    {"username": "YOUR_USERNAME", "password": "YOUR_PASSWORD"},
+    {"username": "YOUR_USERNAME", "password": "YOUR_PASSWORD"},
 ]
 
 READER_USERS = [
@@ -503,7 +505,7 @@ class BaseUser(HttpUser):
 
         try:
             # Get login page for CSRF token
-            res = self.client.get(login_path, name="[AUTH] login_page")
+            res = self.client.get(login_path or "/login", name="[AUTH] login_page")
             if res.status_code != 200:
                 logger.error(f"Failed to load login page: HTTP {res.status_code}")
                 return False
@@ -522,7 +524,7 @@ class BaseUser(HttpUser):
 
             # Submit login
             with self.client.post(
-                submit_path, data=payload, name="[AUTH] login_submit", catch_response=True
+                submit_path or "/login", data=payload, name="[AUTH] login_submit", catch_response=True
             ) as response:
 
                 # Enhanced success detection
@@ -711,19 +713,17 @@ class ReaderUser(BaseUser):
         post = random.choice(POSTS)
 
         # Try to get a comment URL from the comment-store route
-        comment_url = None
+        comment_url = ""
 
         # Method 1: Try to get a random URL from comment-store route
         if route_loader.route_exists("comment-store"):
-            comment_url = route_loader.get_random_url("comment-store")
+            comment_url = route_loader.get_random_url("comment-store") or ""
             logger.debug(f"Got comment URL from route: {comment_url}")
 
         # Method 2: If no comment-store route or URL, construct from post
         if not comment_url:
             # Get a post URL first
-            post_url = self.get_random_route_url("single")
-            if not post_url:
-                post_url = f"/post/{post['id']}/{post['slug']}"
+            post_url = self.get_random_route_url("single") or f"/post/{post['id']}/{post['slug']}"
 
             # Construct comment URL from post URL
             comment_url = post_url + "/comment"
@@ -755,9 +755,9 @@ class ReaderUser(BaseUser):
             return
 
         # Extract hidden fields
-        csrf_input = comment_form.find("input", {"name": "comment_form"})
-        post_id_input = comment_form.find("input", {"name": "post_id"})
-        post_slug_input = comment_form.find("input", {"name": "post_slug"})
+        csrf_input = comment_form.find("input", {"name": "comment_form"}) if comment_form else None
+        post_id_input = comment_form.find("input", {"name": "post_id"}) if comment_form else None
+        post_slug_input = comment_form.find("input", {"name": "post_slug"}) if comment_form else None
 
         if not csrf_input:
             logger.error("No CSRF token found (input name='comment_form')")
@@ -782,7 +782,7 @@ class ReaderUser(BaseUser):
 
         # Submit comment
         with self.client.post(
-            comment_url,
+            comment_url or "",
             data=payload,
             name="[READER] comment_submit",
             catch_response=True,
@@ -829,7 +829,7 @@ class ReaderUser(BaseUser):
 
                 if flash_alerts:
                     for alert in flash_alerts:
-                        alert_class = alert.get("class", [])
+                        alert_class = alert.get("class") or []
                         alert_text = alert.get_text().lower()
                         logger.info(f"Flash alert: classes={alert_class}, text={alert_text[:100]}")
 
@@ -841,7 +841,8 @@ class ReaderUser(BaseUser):
                     # Extract error message if possible
                     error_msg = "Form validation error"
                     for alert in flash_alerts:
-                        if "alert-danger" in alert.get("class", []) or "alert-warning" in alert.get("class", []):
+                        alert_classes = alert.get("class") or []
+                        if "alert-danger" in alert_classes or "alert-warning" in alert_classes:
                             error_msg = alert.get_text().strip()[:100]
                             break
                     response.failure(f"Comment failed: {error_msg}")
@@ -960,7 +961,12 @@ class AdminUser(BaseUser):
 
             # Extract CSRF token (simplified - adapt to your form)
             soup = BeautifulSoup(res.text, "html.parser")
-            csrf_input = soup.find("input", {"name": lambda x: x and "form" in x.lower()})
+            csrf_input = None
+            for input_tag in soup.find_all("input"):
+                name_attr = input_tag.get("name")
+                if isinstance(name_attr, str) and "form" in name_attr.lower():
+                    csrf_input = input_tag
+                    break
 
             if csrf_input:
                 # Submit a sample post (in real scenario, you'd fill all required fields)
