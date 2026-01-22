@@ -8,22 +8,20 @@ License: MIT
 Date:
 """
 
-from locust import HttpUser, task, between, tag
-import random
 import json
-import os
 import logging
-from bs4 import BeautifulSoup
-from typing import Any, Dict, List, Optional, Union
+import os
+import random
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any, Dict, List, Optional
+
+from bs4 import BeautifulSoup
+from locust import HttpUser, between, tag, task
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger('blog_loadtest')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logger = logging.getLogger("blog_loadtest")
 
 # ------------------------
 # ENHANCED ROUTE LOADING SYSTEM
@@ -45,6 +43,7 @@ class HTTPMethod(Enum):
 @dataclass
 class RouteDefinition:
     """Data class representing a route definition"""
+
     name: str
     path: str
     controller: str
@@ -55,21 +54,22 @@ class RouteDefinition:
 
     def __post_init__(self):
         """Validate route definition after initialization"""
-        if not self.path.startswith('/'):
+        if not self.path.startswith("/"):
             logger.warning(f"Route '{self.name}' path '{self.path}' should start with '/'")
 
-        if not self.controller or '@' not in self.controller:
+        if not self.controller or "@" not in self.controller:
             raise ValueError(f"Invalid controller format for route '{self.name}': {self.controller}")
 
         # Auto-detect if authentication is required
         if not self.requires_auth:
             self.requires_auth = bool(self.roles) or any(
-                method in [HTTPMethod.POST, HTTPMethod.PUT, HTTPMethod.DELETE] for method in self.methods)
+                method in [HTTPMethod.POST, HTTPMethod.PUT, HTTPMethod.DELETE] for method in self.methods
+            )
 
 
 class RouteLoader:
     """
-     Route loader with support for new URL format
+    Route loader with support for new URL format
     """
 
     def __init__(self, route_file: str = ROUTE_FILE):
@@ -117,7 +117,8 @@ class RouteLoader:
 
             if len(self._raw_routes_data) < 5:
                 logger.warning(
-                    f"Route file contains only {len(self._raw_routes_data)} routes, which seems low for production")
+                    f"Route file contains only {len(self._raw_routes_data)} routes, which seems low for production"
+                )
 
             # Process routes
             processed_routes = {}
@@ -229,7 +230,7 @@ class RouteLoader:
         if not controller:
             raise ValueError("Route controller cannot be empty")
 
-        if '@' not in controller:
+        if "@" not in controller:
             raise ValueError(f"Controller must be in 'Controller@method' format, got '{controller}'")
 
         return RouteDefinition(
@@ -239,7 +240,7 @@ class RouteLoader:
             methods=methods,
             roles=roles,
             requires_auth=False,  # Will be auto-detected in __post_init__
-            urls=urls
+            urls=urls,
         )
 
     def route_exists(self, name: str) -> bool:
@@ -343,26 +344,32 @@ class RouteLoader:
 # Initialize enhanced route loader
 route_loader = RouteLoader()
 
+
 # Backward compatibility functions
 def load_routes():
     """Load route definitions (legacy function)"""
     route_loader.load_routes()
 
+
 def route_exists(name):
     """Check if route exists (legacy function)"""
     return route_loader.route_exists(name)
+
 
 def get_path(name):
     """Get route path (legacy function)"""
     return route_loader.get_path(name)
 
+
 def get_controller(name):
     """Get route controller (legacy function)"""
     return route_loader.get_controller(name)
 
+
 def get_methods(name):
     """Get route methods (legacy function)"""
     return [method.value for method in route_loader.get_methods(name)]
+
 
 def get_roles(name):
     """Get route roles (legacy function)"""
@@ -393,6 +400,7 @@ except Exception as e:
 # ENHANCED BASE USER CLASS
 # ------------------------
 
+
 class BaseUser(HttpUser):
     abstract = True
     wait_time = between(1.2, 3.5)
@@ -416,7 +424,7 @@ class BaseUser(HttpUser):
         logger.info(f"User started: {self.credentials['username'] if self.credentials else 'Anonymous'}")
 
     def on_stop(self):
-        username = self.credentials['username'] if self.credentials else 'Anonymous'
+        username = self.credentials["username"] if self.credentials else "Anonymous"
         logger.info(f"User stopped: {username} (logged_in: {self.logged_in})")
 
     def load_posts(self):
@@ -429,7 +437,7 @@ class BaseUser(HttpUser):
         api_endpoints = [
             ("api-posts-index", "/api/v1/posts"),
             ("api-posts-recent", "/api/v1/posts/recent"),
-            ("api-posts-popular", "/api/v1/posts/popular")
+            ("api-posts-popular", "/api/v1/posts/popular"),
         ]
 
         for route_name, fallback_path in api_endpoints:
@@ -440,14 +448,12 @@ class BaseUser(HttpUser):
                 if res.status_code == 200:
                     data = res.json()
                     if isinstance(data, list):
-                        POSTS = [
-                            {"id": p["id"], "slug": p.get("slug", f"post-{p['id']}")}
-                            for p in data if "id" in p
-                        ]
+                        POSTS = [{"id": p["id"], "slug": p.get("slug", f"post-{p['id']}")} for p in data if "id" in p]
                     elif isinstance(data, dict) and "posts" in data:
                         POSTS = [
                             {"id": p["id"], "slug": p.get("slug", f"post-{p['id']}")}
-                            for p in data["posts"] if "id" in p
+                            for p in data["posts"]
+                            if "id" in p
                         ]
 
                     if POSTS:
@@ -507,28 +513,18 @@ class BaseUser(HttpUser):
 
             # Submit login
             with self.client.post(
-                    submit_path,
-                    data=payload,
-                    name="[AUTH] login_submit",
-                    catch_response=True
+                submit_path, data=payload, name="[AUTH] login_submit", catch_response=True
             ) as response:
 
                 # Enhanced success detection
-                success_indicators = [
-                    "Login successfully",
-                    "Logout",
-                    "dashboard",
-                    "/admin",
-                    "Welcome",
-                    "Dashboard"
-                ]
+                success_indicators = ["Login successfully", "Logout", "dashboard", "/admin", "Welcome", "Dashboard"]
 
                 error_indicators = {
                     "Check your login details": "Invalid credentials",
                     "Username and password required": "Missing credentials",
                     "Invalid CSRF token": "CSRF validation failed",
                     "Account locked": "Account temporarily locked",
-                    "Too many attempts": "Rate limited"
+                    "Too many attempts": "Rate limited",
                 }
 
                 if response.status_code == 200:
@@ -623,6 +619,7 @@ class BaseUser(HttpUser):
 # ENHANCED READER USER
 # ------------------------
 
+
 class ReaderUser(BaseUser):
     weight = 8
     is_admin = False
@@ -703,11 +700,11 @@ class ReaderUser(BaseUser):
 
         # Get a random post - this ensures URL consistency
         post = random.choice(POSTS)
-        
+
         # Construct URLs that match template exactly
         post_url_for_csrf = f"/post/{post['id']}/{post['slug']}"
         comment_url = f"/post/{post['id']}/{post['slug']}/comment"
-        
+
         logger.info(f"Loading post for CSRF: {post_url_for_csrf}")
         logger.info(f"Submitting comment to: {comment_url}")
 
@@ -718,22 +715,22 @@ class ReaderUser(BaseUser):
             return
 
         # Extract form data
-        soup = BeautifulSoup(res.text, 'html.parser')
+        soup = BeautifulSoup(res.text, "html.parser")
 
         # Find the comment form
-        comment_form = soup.find('form', {'id': 'commentForm'})
+        comment_form = soup.find("form", {"id": "commentForm"})
         if not comment_form:
             logger.error("No comment form found with id='commentForm'")
             # List all forms for debugging
-            all_forms = soup.find_all('form')
+            all_forms = soup.find_all("form")
             for form in all_forms:
                 logger.error(f"Found form: id={form.get('id')}, action={form.get('action')}")
             return
 
         # Extract hidden fields
-        csrf_input = comment_form.find('input', {'name': 'comment_form'})
-        post_id_input = comment_form.find('input', {'name': 'post_id'})
-        post_slug_input = comment_form.find('input', {'name': 'post_slug'})
+        csrf_input = comment_form.find("input", {"name": "comment_form"})
+        post_id_input = comment_form.find("input", {"name": "post_id"})
+        post_slug_input = comment_form.find("input", {"name": "post_slug"})
 
         if not csrf_input:
             logger.error("No CSRF token found (input name='comment_form')")
@@ -744,13 +741,13 @@ class ReaderUser(BaseUser):
 
         # Build payload exactly as your form expects
         payload = {
-            "comment_form": csrf_input.get('value', ''),
-            "post_id": post_id_input.get('value', '') if post_id_input else str(post['id']),
-            "post_slug": post_slug_input.get('value', '') if post_slug_input else post['slug'],
+            "comment_form": csrf_input.get("value", ""),
+            "post_id": post_id_input.get("value", "") if post_id_input else str(post["id"]),
+            "post_slug": post_slug_input.get("value", "") if post_slug_input else post["slug"],
             "author": f"Reader{author_id}",
             "email": f"reader{author_id}@example.com",
             "content": f"This is a test comment from Locust user Reader{author_id}. Great post!",
-            "saveInfo": "on"  # Checkbox value when checked
+            "saveInfo": "on",  # Checkbox value when checked
         }
 
         logger.info(f"Submitting comment to: {comment_url}")
@@ -758,11 +755,11 @@ class ReaderUser(BaseUser):
 
         # Submit comment
         with self.client.post(
-                comment_url,
-                data=payload,
-                name="[READER] comment_submit",
-                catch_response=True,
-                allow_redirects=False  # Don't follow redirects initially
+            comment_url,
+            data=payload,
+            name="[READER] comment_submit",
+            catch_response=True,
+            allow_redirects=False,  # Don't follow redirects initially
         ) as response:
             # Log response details for debugging
             logger.info(f"Response status: {response.status_code}")
@@ -773,11 +770,11 @@ class ReaderUser(BaseUser):
             # Scenario 1: Success with 302 redirect (common in PHP after POST)
             if response.status_code == 302:
                 # Get the redirect location
-                location = response.headers.get('Location', '')
+                location = response.headers.get("Location", "")
                 logger.info(f"Redirected to: {location}")
 
                 # Check if redirect is back to the post (success) or to error page
-                if location and ('/post/' in location or 'comment' not in location):
+                if location and ("/post/" in location or "comment" not in location):
                     response.success()
                     logger.info("Comment submitted successfully (302 redirect)")
                 else:
@@ -794,25 +791,18 @@ class ReaderUser(BaseUser):
                     "your comment is awaiting moderation",
                     "thank you for your comment",
                     "success",
-                    "alert-success"
+                    "alert-success",
                 ]
 
-                error_indicators = [
-                    "error",
-                    "invalid",
-                    "required",
-                    "failed",
-                    "alert-danger",
-                    "alert-warning"
-                ]
+                error_indicators = ["error", "invalid", "required", "failed", "alert-danger", "alert-warning"]
 
                 # Check flash messages in the response
-                soup_response = BeautifulSoup(response.text, 'html.parser')
-                flash_alerts = soup_response.find_all(class_=['alert'])
+                soup_response = BeautifulSoup(response.text, "html.parser")
+                flash_alerts = soup_response.find_all(class_=["alert"])
 
                 if flash_alerts:
                     for alert in flash_alerts:
-                        alert_class = alert.get('class', [])
+                        alert_class = alert.get("class", [])
                         alert_text = alert.get_text().lower()
                         logger.info(f"Flash alert: classes={alert_class}, text={alert_text[:100]}")
 
@@ -824,14 +814,14 @@ class ReaderUser(BaseUser):
                     # Extract error message if possible
                     error_msg = "Form validation error"
                     for alert in flash_alerts:
-                        if 'alert-danger' in alert.get('class', []) or 'alert-warning' in alert.get('class', []):
+                        if "alert-danger" in alert.get("class", []) or "alert-warning" in alert.get("class", []):
                             error_msg = alert.get_text().strip()[:100]
                             break
                     response.failure(f"Comment failed: {error_msg}")
                     logger.warning(f"Comment submission failed: {error_msg}")
                 else:
                     # Check if we're still on a post page (might be success without message)
-                    if 'post/' in response.url or 'id="commentForm"' in response_text:
+                    if "post/" in response.url or 'id="commentForm"' in response_text:
                         response.success()
                         logger.info("Comment likely submitted (still on post page)")
                     else:
@@ -876,6 +866,7 @@ class ReaderUser(BaseUser):
 # ------------------------
 # ENHANCED ADMIN USER
 # ------------------------
+
 
 class AdminUser(BaseUser):
     weight = 2
@@ -941,16 +932,16 @@ class AdminUser(BaseUser):
                 return
 
             # Extract CSRF token (simplified - adapt to your form)
-            soup = BeautifulSoup(res.text, 'html.parser')
-            csrf_input = soup.find('input', {'name': lambda x: x and 'form' in x.lower()})
+            soup = BeautifulSoup(res.text, "html.parser")
+            csrf_input = soup.find("input", {"name": lambda x: x and "form" in x.lower()})
 
             if csrf_input:
                 # Submit a sample post (in real scenario, you'd fill all required fields)
                 submit_url = self.get_random_route_url("post-add") or "/admin/posts/create"
                 payload = {
-                    'title': f'Test Post {random.randint(1000, 9999)}',
-                    'content': 'This is a test post created by Locust load testing.',
-                    'csrf_token': csrf_input.get('value', '')
+                    "title": f"Test Post {random.randint(1000, 9999)}",
+                    "content": "This is a test post created by Locust load testing.",
+                    "csrf_token": csrf_input.get("value", ""),
                 }
                 self.client.post(submit_url, data=payload, name="[ADMIN] post_create_submit")
 
@@ -965,10 +956,7 @@ class AdminUser(BaseUser):
     @tag("admin", "navigation")
     def view_random_admin_section(self):
         if self.ensure_logged_in():
-            admin_sections = [
-                "posts", "comments", "users", "categories",
-                "dashboard", "profile-edit"
-            ]
+            admin_sections = ["posts", "comments", "users", "categories", "dashboard", "profile-edit"]
             section = random.choice(admin_sections)
             url = self.get_random_route_url(section)
             if url:
