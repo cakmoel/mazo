@@ -969,7 +969,7 @@ class AdminUser(BaseUser):
 
 if __name__ == "__main__":
     # Print configuration summary
-    print("🚀 Production Locust Load Test Configuration")
+    print("Locust Load Test Configuration")
     print("=" * 50)
 
     stats = {
