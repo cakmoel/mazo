@@ -1,5 +1,7 @@
 # --- System/IDE ---
 .idea
 venv/
+load_test_results_*
 __pycache__
 *.json
+
