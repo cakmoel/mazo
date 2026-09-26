@@ -186,14 +186,7 @@ jobs:
     - name: Test with full routes.json
       run: |
         if [ -f "routes.json" ]; then
-          python3 -c "
-          import sys
-          sys.path.insert(0, '.')
-          from locustfile import RouteLoader
-          loader = RouteLoader()
-          loader.load_routes()
-          print('Full routes loaded:', len(loader.get_all_routes()))
-          "
+          PYTHONPATH=. python3 -c "import sys; sys.path.insert(0, '.'); from locustfile import RouteLoader; loader = RouteLoader(); loader.load_routes(); print('Full routes loaded:', len(loader.get_all_routes()))"
         fi
 
   build-status:
