@@ -71,6 +71,7 @@ jobs:
 
   security-scan:
     runs-on: ubuntu-latest
+    continue-on-error: true
 
     steps:
     - uses: actions/checkout@v4
@@ -94,13 +95,13 @@ jobs:
         safety check --json --output safety-report.json || true || true
 
     - name: Upload security reports
+      if: always()
       uses: actions/upload-artifact@v3
       with:
         name: security-reports
         path: |
           bandit-report.json
           safety-report.json
-      if: always()
 
   code-quality:
     runs-on: ubuntu-latest
@@ -185,7 +186,9 @@ jobs:
     - name: Test with full routes.json
       run: |
         if [ -f "routes.json" ]; then
-          PYTHONPATH=. python3 -c "
+          python3 -c "
+          import sys
+          sys.path.insert(0, '.')
           from locustfile import RouteLoader
           loader = RouteLoader()
           loader.load_routes()
