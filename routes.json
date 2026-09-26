@@ -1,0 +1,1249 @@
+{
+    "home": {
+        "0": "/",
+        "1": "PostController@home",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "single": {
+        "0": "/post/1/sample-post",
+        "1": "PostController@show",
+        "methods": [
+            "GET",
+            "POST",
+            "OPTIONS"
+        ],
+        "roles": []
+    },
+    "page": {
+        "0": "/page/sample-post",
+        "1": "PageController@show",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": []
+    },
+    "category": {
+        "0": "/category/uncategorized",
+        "1": "CategoryController@show",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "archive-index": {
+        "0": "/archive",
+        "1": "ArchiveController@allArchives",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "archive": {
+        "0": "/archive/06/2026",
+        "1": "ArchiveController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "search-get": {
+        "0": "/search",
+        "1": "SearchController@query",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "search-term": {
+        "0": "/search/search-test",
+        "1": "SearchController@query",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "rss": {
+        "0": "/rss.xml",
+        "1": "RSSController@rss",
+        "methods": [
+            "GET",
+            "HEAD"
+        ],
+        "roles": []
+    },
+    "atom": {
+        "0": "/atom.xml",
+        "1": "AtomController@atom",
+        "methods": [
+            "GET",
+            "HEAD"
+        ],
+        "roles": []
+    },
+    "sitemap": {
+        "0": "/sitemap.xml",
+        "1": "SitemapController@generate",
+        "methods": [
+            "GET",
+            "HEAD"
+        ],
+        "roles": []
+    },
+    "privacy-policy": {
+        "0": "/privacy-policy",
+        "1": "PageController@privacyPolicy",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "terms-of-service": {
+        "0": "/terms-of-service",
+        "1": "PageController@termsOfService",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "cookie-consent-save": {
+        "0": "/cookie-consent/save",
+        "1": "CookieConsentController@save",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "comment-show": {
+        "0": "/post/1/sample-post/comment/1",
+        "1": "CommentController@show",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "comment-store": {
+        "0": "/post/1/sample-post/comment",
+        "1": "CommentController@store",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "login": {
+        "0": "/login",
+        "1": "AuthController@login",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "login-submit": {
+        "0": "/login-submit",
+        "1": "AuthController@loginSubmit",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "logout": {
+        "0": "/logout",
+        "1": "AuthController@logout",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "password-request": {
+        "0": "/forgot-password",
+        "1": "AuthController@showForgotPasswordForm",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "password-email": {
+        "0": "/forgot-password/send",
+        "1": "AuthController@sendResetLinkEmail",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "password-reset": {
+        "0": "/reset-password/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "1": "AuthController@showResetForm",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "password-update": {
+        "0": "/reset-password",
+        "1": "AuthController@resetPassword",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "dashboard": {
+        "0": "/admin",
+        "1": "UserController@dashboard",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin",
+            "editor",
+            "author",
+            "subscriber"
+        ]
+    },
+    "ai-settings": {
+        "0": "/admin/ai/settings",
+        "1": "AiSettingsController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "ai-settings-save": {
+        "0": "/admin/ai/settings/save",
+        "1": "AiSettingsController@save",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "ai-usage-dashboard": {
+        "0": "/admin/ai/usage",
+        "1": "AiUsageController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "health-dashboard": {
+        "0": "/admin/health",
+        "1": "HealthController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "health-reset": {
+        "0": "/admin/health/reset",
+        "1": "HealthController@reset",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "navigation-list": {
+        "0": "/admin/navigation",
+        "1": "NavigationController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "navigation-show": {
+        "0": "/admin/navigation/menu/1",
+        "1": "NavigationController@show",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "navigation-create-menu": {
+        "0": "/admin/navigation/create-menu",
+        "1": "NavigationController@createMenu",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "navigation-edit-menu": {
+        "0": "/admin/navigation/edit-menu/1",
+        "1": "NavigationController@editMenu",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "navigation-delete-menu": {
+        "0": "/admin/navigation/delete-menu/1",
+        "1": "NavigationController@deleteMenu",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "navigation-create-item": {
+        "0": "/admin/navigation/menu/1/item/create",
+        "1": "NavigationController@createItem",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "navigation-edit-item": {
+        "0": "/admin/navigation/edit-item/1",
+        "1": "NavigationController@editItem",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "navigation-delete-item": {
+        "0": "/admin/navigation/delete-item/1",
+        "1": "NavigationController@deleteItem",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "navigation-reorder": {
+        "0": "/admin/navigation/reorder",
+        "1": "NavigationController@reorder",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "navigation-toggle-menu-status": {
+        "0": "/admin/navigation/menu/1/toggle-status",
+        "1": "NavigationController@toggleMenuStatus",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "navigation-toggle-item-status": {
+        "0": "/admin/navigation/item/1/toggle-status",
+        "1": "NavigationController@toggleItemStatus",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "navigation-duplicate-menu": {
+        "0": "/admin/navigation/menu/1/duplicate",
+        "1": "NavigationController@duplicateMenu",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "navigation-duplicate-item": {
+        "0": "/admin/navigation/item/1/duplicate",
+        "1": "NavigationController@duplicateItem",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "users": {
+        "0": "/admin/users",
+        "1": "UserController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "user-add": {
+        "0": "/admin/users/create",
+        "1": "UserController@create",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "user-edit": {
+        "0": "/admin/users/edit/1",
+        "1": "UserController@edit",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "user-delete": {
+        "0": "/admin/users/delete/1",
+        "1": "UserController@delete",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "posts": {
+        "0": "/admin/posts",
+        "1": "PostController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin",
+            "editor",
+            "author"
+        ]
+    },
+    "post-upload-image": {
+        "0": "/admin/posts/upload-image",
+        "1": "PostController@uploadImage",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor",
+            "author"
+        ]
+    },
+    "post-delete-image": {
+        "0": "/admin/posts/delete-image",
+        "1": "PostController@deleteImage",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor",
+            "author"
+        ]
+    },
+    "post-add": {
+        "0": "/admin/posts/create",
+        "1": "PostController@create",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor",
+            "author"
+        ]
+    },
+    "post-edit": {
+        "0": "/admin/posts/edit/1",
+        "1": "PostController@edit",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor",
+            "author"
+        ]
+    },
+    "post-delete": {
+        "0": "/admin/posts/delete/1",
+        "1": "PostController@delete",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor",
+            "author"
+        ]
+    },
+    "ai-continue": {
+        "0": "/admin/posts/ai-continue",
+        "1": "PostController@aiContinue",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor",
+            "author"
+        ]
+    },
+    "post-session-ping": {
+        "0": "/admin/posts/session-ping",
+        "1": "PostController@sessionPing",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin",
+            "editor",
+            "author"
+        ]
+    },
+    "pages": {
+        "0": "/admin/pages",
+        "1": "PageController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin",
+            "editor"
+        ]
+    },
+    "page-add": {
+        "0": "/admin/pages/create",
+        "1": "PageController@create",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor"
+        ]
+    },
+    "page-edit": {
+        "0": "/admin/pages/edit/1",
+        "1": "PageController@edit",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor"
+        ]
+    },
+    "page-delete": {
+        "0": "/admin/pages/delete/1",
+        "1": "PageController@delete",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor"
+        ]
+    },
+    "page-session-ping": {
+        "0": "/admin/pages/session-ping",
+        "1": "PageController@sessionPing",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin",
+            "editor"
+        ]
+    },
+    "categories": {
+        "0": "/admin/categories",
+        "1": "CategoryController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin",
+            "editor"
+        ]
+    },
+    "category-add": {
+        "0": "/admin/categories/create",
+        "1": "CategoryController@create",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor"
+        ]
+    },
+    "category-edit": {
+        "0": "/admin/categories/edit/1",
+        "1": "CategoryController@edit",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor"
+        ]
+    },
+    "category-delete": {
+        "0": "/admin/categories/delete/1",
+        "1": "CategoryController@delete",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor"
+        ]
+    },
+    "comments": {
+        "0": "/admin/comments",
+        "1": "CommentController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin",
+            "editor"
+        ]
+    },
+    "comment-approve": {
+        "0": "/admin/comments/approve/1",
+        "1": "CommentController@approve",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor"
+        ]
+    },
+    "comment-delete": {
+        "0": "/admin/comments/delete/1",
+        "1": "CommentController@delete",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin",
+            "editor"
+        ]
+    },
+    "profile-edit": {
+        "0": "/profile/edit",
+        "1": "ProfileController@edit",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "subscriber",
+            "editor",
+            "author"
+        ]
+    },
+    "profile-update": {
+        "0": "/profile/edit/submit",
+        "1": "ProfileController@update",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "subscriber",
+            "editor",
+            "author"
+        ]
+    },
+    "gdpr-export": {
+        "0": "/gdpr/export",
+        "1": "GDPRController@export",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "author",
+            "editor",
+            "admin"
+        ]
+    },
+    "gdpr-download": {
+        "0": "/gdpr/download/1",
+        "1": "GDPRController@downloadExport",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "author",
+            "editor",
+            "admin"
+        ]
+    },
+    "gdpr-delete": {
+        "0": "/gdpr/delete",
+        "1": "GDPRController@delete",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "author",
+            "editor",
+            "admin"
+        ]
+    },
+    "gdpr-cancel": {
+        "0": "/gdpr/cancel",
+        "1": "GDPRController@cancelDeletion",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "author",
+            "editor",
+            "admin"
+        ]
+    },
+    "gdpr-admin": {
+        "0": "/admin/gdpr",
+        "1": "GDPRController@gdprDashboard",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "gdpr-exports": {
+        "0": "/admin/gdpr/exports",
+        "1": "GDPRController@listExports",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "gdpr-deletions": {
+        "0": "/admin/gdpr/deletions",
+        "1": "GDPRController@listDeletions",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "gdpr-process-exports": {
+        "0": "/admin/gdpr/process-exports",
+        "1": "GDPRController@processExports",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "gdpr-process-deletions": {
+        "0": "/admin/gdpr/process-deletions",
+        "1": "GDPRController@processDeletions",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "gdpr-cancel-user": {
+        "0": "/admin/gdpr/cancel-deletion",
+        "1": "GDPRController@cancelUserDeletion",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "settings": {
+        "0": "/admin/settings",
+        "1": "SettingsController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "settings-save": {
+        "0": "/admin/settings/save",
+        "1": "SettingsController@save",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "install": {
+        "0": "/install",
+        "1": "InstallerController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "install-submit": {
+        "0": "/install/submit",
+        "1": "InstallerController@install",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "ai-spam-dashboard": {
+        "0": "/admin/ai-spam",
+        "1": "AISpamController@dashboard",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "ai-spam-settings": {
+        "0": "/admin/ai-spam/settings",
+        "1": "AISpamController@settings",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "ai-spam-settings-save": {
+        "0": "/admin/ai-spam/settings/save",
+        "1": "AISpamController@saveSettings",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "ai-spam-train": {
+        "0": "/admin/ai-spam/train",
+        "1": "AISpamController@trainModel",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "ai-spam-classify": {
+        "0": "/admin/ai-spam/classify",
+        "1": "AISpamController@classify",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "ai-spam-classify-submit": {
+        "0": "/admin/ai-spam/classify",
+        "1": "AISpamController@manualClassify",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "ai-spam-clear-cache": {
+        "0": "/admin/ai-spam/clear-cache",
+        "1": "AISpamController@clearCache",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "ai-spam-export": {
+        "0": "/admin/ai-spam/export",
+        "1": "AISpamController@exportTrainingData",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-home": {
+        "0": "/store",
+        "1": "StoreController@themes",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "store-browse": {
+        "0": "/store/browse",
+        "1": "StoreController@browse",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "store-product": {
+        "0": "/store/product/1/sample-post",
+        "1": "StoreController@product",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "store-review": {
+        "0": "/store/product/1/review",
+        "1": "StoreController@addReview",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "cart": {
+        "0": "/cart",
+        "1": "CartController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "cart-add": {
+        "0": "/cart/add",
+        "1": "CartController@add",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "cart-update": {
+        "0": "/cart/update",
+        "1": "CartController@update",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "cart-remove": {
+        "0": "/cart/remove/1",
+        "1": "CartController@remove",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "cart-clear": {
+        "0": "/cart/clear",
+        "1": "CartController@clear",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "checkout": {
+        "0": "/checkout",
+        "1": "CheckoutController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "checkout-submit": {
+        "0": "/checkout/submit",
+        "1": "CheckoutController@process",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "checkout-success": {
+        "0": "/checkout/success/1",
+        "1": "CheckoutController@success",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "my-orders": {
+        "0": "/my-orders",
+        "1": "MyOrdersController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "checkout-confirm": {
+        "0": "/checkout/confirm/1",
+        "1": "MyOrdersController@confirmPayment",
+        "methods": [
+            "POST"
+        ],
+        "roles": []
+    },
+    "store-admin": {
+        "0": "/admin/store",
+        "1": "StoreAdminController@dashboard",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-products": {
+        "0": "/admin/store/products",
+        "1": "StoreAdminController@products",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-product-add": {
+        "0": "/admin/store/products/create",
+        "1": "StoreAdminController@createProduct",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-product-edit": {
+        "0": "/admin/store/products/edit/1",
+        "1": "StoreAdminController@editProduct",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-product-delete": {
+        "0": "/admin/store/products/delete/1",
+        "1": "StoreAdminController@deleteProduct",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-products-trash": {
+        "0": "/admin/store/products/trash",
+        "1": "StoreAdminController@trashProducts",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-product-restore": {
+        "0": "/admin/store/products/restore/1",
+        "1": "StoreAdminController@restoreProduct",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-product-permanent-delete": {
+        "0": "/admin/store/products/permanent-delete/1",
+        "1": "StoreAdminController@permanentDeleteProduct",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-categories": {
+        "0": "/admin/store/categories",
+        "1": "StoreAdminController@categories",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-category-add": {
+        "0": "/admin/store/categories/create",
+        "1": "StoreAdminController@createCategory",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-category-edit": {
+        "0": "/admin/store/categories/edit/1",
+        "1": "StoreAdminController@editCategory",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-category-delete": {
+        "0": "/admin/store/categories/delete/1",
+        "1": "StoreAdminController@deleteCategory",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-orders": {
+        "0": "/admin/store/orders",
+        "1": "StoreAdminController@orders",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-order-view": {
+        "0": "/admin/store/orders/1",
+        "1": "StoreAdminController@viewOrder",
+        "methods": [
+            "GET"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-order-status": {
+        "0": "/admin/store/orders/1/status",
+        "1": "StoreAdminController@updateOrderStatus",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-order-add-note": {
+        "0": "/admin/store/orders/1/notes",
+        "1": "StoreAdminController@addOrderNote",
+        "methods": [
+            "POST"
+        ],
+        "roles": [
+            "admin"
+        ]
+    },
+    "store-download": {
+        "0": "/store/download/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "1": "DownloadController@download",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "api-health-check": {
+        "0": "/api/v1/status",
+        "1": "Api\\HealthController@check",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "api-posts-index": {
+        "0": "/api/v1/posts",
+        "1": "Api\\PostController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "api-posts-show": {
+        "0": "/api/v1/posts/1",
+        "1": "Api\\PostController@show",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "api-post-comments-index": {
+        "0": "/api/v1/posts/1/comments",
+        "1": "Api\\CommentController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "api-categories-index": {
+        "0": "/api/v1/categories",
+        "1": "Api\\CategoryController@index",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    },
+    "api-categories-show": {
+        "0": "/api/v1/categories/1",
+        "1": "Api\\CategoryController@show",
+        "methods": [
+            "GET"
+        ],
+        "roles": []
+    }
+}

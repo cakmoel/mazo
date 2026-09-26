@@ -4,4 +4,5 @@ venv/
 load_test_results_*
 __pycache__
 *.json
+!routes.json
 
