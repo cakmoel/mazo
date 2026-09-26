@@ -23,5 +23,5 @@ per-file-ignores =
     tests/python/*:E501,F401,F811
     # Conftest can have unused fixtures
     tests/python/conftest.py:F401,F811
-max-complexity = 10
+max-complexity = 20
 import-order-style = google

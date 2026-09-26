@@ -10,7 +10,7 @@ from unittest.mock import MagicMock, Mock, patch
 import pytest
 
 # Add parent directory to path to import locustfile
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from locustfile import AdminUser, BaseUser, ReaderUser
 

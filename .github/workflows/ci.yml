@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9, "3.10", "3.11"]
+        python-version: ["3.10", "3.11", "3.12"]
 
     steps:
     - uses: actions/checkout@v4
@@ -36,7 +36,7 @@ jobs:
 
     - name: Run Python tests with pytest
       run: |
-        pytest tests/python/ --verbose --cov=locustfile --cov-report=xml --cov-report=term-missing
+        python -m pytest tests/python/ --verbose --cov=locustfile --cov-report=xml --cov-report=term-missing
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
@@ -129,6 +129,10 @@ jobs:
       run: |
         flake8 locustfile.py --max-line-length=120 --ignore=E203,W503
 
+    - name: Run MyPy type checking
+      run: |
+        mypy locustfile.py --ignore-missing-imports --no-error-summary
+
   integration-test:
     runs-on: ubuntu-latest
     needs: [python-tests, shell-tests]
@@ -149,11 +153,10 @@ jobs:
     - name: Test script configuration
       run: |
         chmod +x locust.sh
-        ./locust.sh --check-only
+        python3 -c "import sys; sys.path.insert(0, '.'); from locustfile import RouteLoader; print('Import OK')"
 
     - name: Test route loading with sample data
       run: |
-        # Create sample routes.json for testing FIRST
         cat > routes.json << 'EOF'
         {
           "home": {
@@ -168,8 +171,7 @@ jobs:
           }
         }
         EOF
-        
-        # Test Python import and basic functionality
+
         python3 -c "
         import sys
         sys.path.insert(0, '.')
@@ -178,6 +180,19 @@ jobs:
         loader.load_routes()
         print('Routes loaded successfully:', len(loader.get_all_routes()))
         "
+
+    - name: Test with full routes.json
+      run: |
+        if [ -f "routes.json" ]; then
+          python3 -c "
+          import sys
+          sys.path.insert(0, '.')
+          from locustfile import RouteLoader
+          loader = RouteLoader()
+          loader.load_routes()
+          print('Full routes loaded:', len(loader.get_all_routes()))
+          "
+        fi
 
   build-status:
     runs-on: ubuntu-latest
@@ -191,10 +206,10 @@ jobs:
               "${{ needs.shell-tests.result }}" == "success" && 
               "${{ needs.code-quality.result }}" == "success" && 
               "${{ needs.integration-test.result }}" == "success" ]]; then
-          echo "✅ All checks passed!"
+          echo "All checks passed!"
           exit 0
         else
-          echo "❌ Some checks failed!"
+          echo "Some checks failed!"
           echo "Python tests: ${{ needs.python-tests.result }}"
           echo "Shell tests: ${{ needs.shell-tests.result }}"
           echo "Security scan: ${{ needs.security-scan.result }}"

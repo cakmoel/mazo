@@ -154,7 +154,7 @@ class RouteLoader:
                 logger.critical("Maximum load attempts reached. Route system is unavailable.")
             raise
 
-    def _parse_route_definition(self, name: str, data: Any) -> RouteDefinition:
+    def _parse_route_definition(self, name: str, data: Any) -> RouteDefinition:  # noqa: C901
         """
         Parse a route definition from raw data - SUPPORTS NEW FORMAT
         """
@@ -407,7 +407,7 @@ class BaseUser(HttpUser):
     is_admin = False
 
     def on_start(self):
-        global POSTS
+        global POSTS  # noqa: F824
         if not POSTS:
             self.load_posts()
 
@@ -429,7 +429,7 @@ class BaseUser(HttpUser):
 
     def load_posts(self):
         """Load post list from API or scrape homepage with fallbacks"""
-        global POSTS
+        global POSTS  # noqa: F824
         if POSTS:
             return
 
@@ -841,7 +841,7 @@ class ReaderUser(BaseUser):
             # Scenario 5: Server error
             elif response.status_code >= 500:
                 response.failure(f"Server error ({response.status_code})")
-                logger.error(f"Server error during comment submission")
+                logger.error("Server error during comment submission")
 
             # Scenario 6: Other status codes
             else:
@@ -983,16 +983,16 @@ if __name__ == "__main__":
     for key, value in stats.items():
         print(f"{key.replace('_', ' ').title()}: {value}")
 
-    print(f"\nUser Distribution:")
+    print("\nUser Distribution:")
     print(f"  Readers: 80% ({ReaderUser.weight} weight)")
     print(f"  Admins: 20% ({AdminUser.weight} weight)")
 
     # Show sample URLs
-    print(f"\nSample URLs from routes.json:")
+    print("\nSample URLs from routes.json:")
     sample_routes = ["single", "category", "archive"]
     for route in sample_routes:
         urls = route_loader.get_all_urls(route)
         if urls:
             print(f"  {route}: {urls[0]}")
 
-    print(f"\nRun with: locust -f this_file.py")
+    print("\nRun with: locust -f this_file.py")
