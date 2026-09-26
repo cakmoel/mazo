@@ -376,7 +376,7 @@ def get_roles(name):
     return route_loader.get_roles(name)
 
 
-POSTS = []
+POSTS: list[dict] = []
 
 ADMIN_USERS = [
     {"username": "YOUR_USERNAME", "password": "YOUR_PASSWORD"},
