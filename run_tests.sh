@@ -54,17 +54,17 @@ def main():
     
     # 4. Code formatting check
     tests_total += 1
-    if run_command("source lint_venv/bin/activate && black --check --diff locustfile.py", "Black code formatting check"):
+    if run_command("source venv/bin/activate && black --check --diff locustfile.py", "Black code formatting check"):
         tests_passed += 1
     
     # 5. Import sorting check
     tests_total += 1
-    if run_command("source lint_venv/bin/activate && isort --check-only --diff locustfile.py", "isort import sorting check"):
+    if run_command("source venv/bin/activate && isort --check-only --diff locustfile.py", "isort import sorting check"):
         tests_passed += 1
     
     # 6. Python linting
     tests_total += 1
-    if run_command("source lint_venv/bin/activate && flake8 locustfile.py", "Flake8 linting"):
+    if run_command("source venv/bin/activate && flake8 locustfile.py", "Flake8 linting"):
         tests_passed += 1
     
     # 7. Python unit tests
@@ -79,13 +79,14 @@ def main():
     
     # 10. Type checking (optional)
     tests_total += 1
-    if run_command("source lint_venv/bin/activate && mypy locustfile.py --ignore-missing-imports", "MyPy type checking"):
+    if run_command("source venv/bin/activate && mypy locustfile.py --ignore-missing-imports", "MyPy type checking"):
         tests_passed += 1
     
     # 11. Test with sample routes.json
     tests_total += 1
     sample_routes_test = '''
 import sys
+import os
 sys.path.insert(0, '.')
 from locustfile import RouteLoader
 import json

@@ -52,6 +52,9 @@ check_prerequisites() {
     if ! command -v python3 &> /dev/null; then
         print_error "Python3 is not installed or not in PATH"
         exit 1
+    else
+        PYTHON_VERSION=$(python3 --version 2>&1)
+        print_success "Python found: $PYTHON_VERSION"
     fi
     
     # Check Locust file exists
@@ -217,6 +220,8 @@ show_usage() {
     echo "  --headless            Run in headless mode without web UI"
     echo "  --check-only          Only check configuration without running"
     echo "  --help                Show this help message"
+    echo
+    echo "Version: 2.0.0"
     echo
     echo "Examples:"
     echo "  $0 --host https://staging.example.com"
